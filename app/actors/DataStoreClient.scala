@@ -13,6 +13,7 @@ object DataStoreClient {
 
   val redisHost = current.configuration.getString("redis.host").get
   val redisPort = current.configuration.getInt("redis.port").get
+  val windowSize = current.configuration.getInt("redis.windowsize").get
   val client = new RedisClient(redisHost, redisPort)
   implicit val hostPathDataFormat = Json.format[HostPathData]
 
@@ -28,8 +29,6 @@ object DataStoreClient {
 class DataStoreClient extends Actor{
 
   import DataStoreClient._
-
-  val windowSize = 100
 
   private def getCount(keyCounter: String) = (client incr (keyCounter, 1)).get
 
